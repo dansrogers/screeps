@@ -1,22 +1,22 @@
 module.exports = function(grunt) {
-
-    var config = require('./.screeps.json')
+    var config = require('./.screeps.json');
     var branch = grunt.option('branch') || config.branch;
     var email = grunt.option('email') || config.email;
     var password = grunt.option('password') || config.password;
-    var ptr = grunt.option('ptr') ? true : config.ptr
+    var ptr = grunt.option('ptr') ? true : config.ptr;
 
-    grunt.loadNpmTasks('grunt-screeps')
-    grunt.loadNpmTasks('grunt-contrib-clean')
-    grunt.loadNpmTasks('grunt-contrib-copy')
-    grunt.loadNpmTasks('grunt-file-append')
-    grunt.loadNpmTasks('grunt-jsbeautifier')
+    grunt.loadNpmTasks('grunt-screeps');
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-file-append');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-eslint');
 
     var currentdate = new Date();
 
     // Output the current date and branch.
-    grunt.log.subhead('Task Start: ' + currentdate.toLocaleString())
-    grunt.log.writeln('Branch: ' + branch)
+    grunt.log.subhead('Task Start: ' + currentdate.toLocaleString());
+    grunt.log.writeln('Branch: ' + branch);
 
     grunt.initConfig({
         screeps: {
@@ -24,22 +24,22 @@ module.exports = function(grunt) {
                 email: email,
                 password: password,
                 branch: branch,
-                ptr: ptr
+                ptr: ptr,
             },
             dist: {
-                src: ['dist/*.js']
-            }
+                src: ['dist/*.js' ],
+            },
         },
 
         // Remove all files from the dist folder.
         clean: {
-            'dist': ['dist']
+            'dist': ['dist' ],
         },
 
-        // Copy all source files into the dist folder, flattening the folder 
+        // Copy all source files into the dist folder, flattening the folder
         // structure by converting path delimiters to underscores
         copy: {
-            // Pushes the game code to the dist folder so it can be modified 
+            // Pushes the game code to the dist folder so it can be modified
             // before being send to the screeps server.
             screeps: {
                 files: [{
@@ -51,9 +51,9 @@ module.exports = function(grunt) {
                     rename: function(dest, src) {
                         // Change the path name utilize underscores for folders
                         return dest + src.replace(/\//g, '_');
-                    }
+                    },
                 }],
-            }
+            },
         },
 
         // Add version variable using current timestamp.
@@ -62,29 +62,42 @@ module.exports = function(grunt) {
                 files: [{
                     append: "\nmodule.exports.SCRIPT_VERSION = " + currentdate.getTime() + ";\n",
                     input: 'dist/version.js',
-                }]
-            }
+                }],
+            },
         },
 
         // Apply code styling
         jsbeautifier: {
             modify: {
-                src: ["*.js", "src/**/*.js"],
+                src: ["*.js", "src/**/*.js" ],
                 options: {
-                    config: '.jsbeautifyrc'
-                }
+                    config: '.jsbeautifyrc',
+                },
             },
             verify: {
-                src: ["*.js", "src/**/*.js"],
+                src: ["*.js", "src/**/*.js" ],
                 options: {
                     mode: 'VERIFY_ONLY',
-                    config: '.jsbeautifyrc'
-                }
-            }
-        }
-    })
+                    config: '.jsbeautifyrc',
+                },
+            },
+        },
 
-    grunt.registerTask('default', ['jsbeautifier:modify', 'clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
-    grunt.registerTask('test', ['jsbeautifier:verify']);
-    grunt.registerTask('pretty', ['jsbeautifier:modify']);
-}
+        eslint: { // configure the task
+            options: {
+                configFile: '.eslintrc.js',
+                fix: true,
+            },
+            target: [ // some example files
+                'Gruntfile.js',
+                'src/**/*.js',
+                '.eslintrc.js',
+            ],
+
+        },
+    });
+
+    grunt.registerTask('default', ['eslint', 'clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
+    grunt.registerTask('test', ['eslint']);
+    grunt.registerTask('pretty', ['eslint']);
+};

@@ -7,11 +7,13 @@
     "grunt-screeps": "^1.4.0"
   },
   "devDependencies": {
+    "eslint-plugin-screeps": "^1.4.0",
     "grunt": "^1.0.3",
     "grunt-contrib-clean": "^1.1.0",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-file-append": "0.0.7",
-    "grunt-jsbeautifier": "^0.2.13"
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-eslint": "^21.0.0",
+    "grunt-file-append": "0.0.7"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
