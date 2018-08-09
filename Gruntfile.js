@@ -66,23 +66,6 @@ module.exports = function(grunt) {
       },
     },
 
-    // Apply code styling
-    jsbeautifier: {
-      modify: {
-        src: ["*.js", "src/**/*.js" ],
-        options: {
-          config: '.jsbeautifyrc',
-        },
-      },
-      verify: {
-        src: ["*.js", "src/**/*.js" ],
-        options: {
-          mode: 'VERIFY_ONLY',
-          config: '.jsbeautifyrc',
-        },
-      },
-    },
-
     eslint: { // configure the task
       options: {
         configFile: '.eslintrc.js',
