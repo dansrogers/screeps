@@ -98,6 +98,17 @@ module.exports = function(grunt) {
       ],
 
     },
+
+    watch: {
+      scripts: {
+        files: [
+          'src/**/*.js',
+          '.eslintrc.js',
+          'Gruntfile.js',
+        ],
+        tasks: ['default'],
+      },
+    },
   });
 
   grunt.registerTask('default', ['eslint', 'clean', 'copy:screeps', 'file_append:versioning', 'screeps']);
