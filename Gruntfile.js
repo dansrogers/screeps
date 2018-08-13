@@ -42,17 +42,37 @@ module.exports = function(grunt) {
       // Pushes the game code to the dist folder so it can be modified
       // before being send to the screeps server.
       screeps: {
-        files: [{
-          expand: true,
-          cwd: 'src/',
-          src: '**',
-          dest: 'dist/',
-          filter: 'isFile',
-          rename: function(dest, src) {
+        files: [
+          {
+            expand: true,
+            cwd: 'src',
+            src: [
+              '**/*.js',
+              'screeps_modules/sos/Kernel.js',
+              'screeps_modules/sos/os_utils.js',
+            ],
+            dest: 'dist/',
+            filter: 'isFile',
+            rename: function(dest, src) {
             // Change the path name utilize underscores for folders
-            return dest + src.replace(/\//g, '_');
+              return dest + src.replace(/\//g, '_');
+            },
           },
-        }],
+          {
+            expand: true,
+            cwd: 'screeps_modules',
+            src: [
+              'sos/Kernel.js',
+              'sos/os_utils.js',
+            ],
+            dest: 'dist/',
+            filter: 'isFile',
+            rename: function(dest, src) {
+            // Change the path name utilize underscores for folders
+              return dest + src.replace(/\//g, '_');
+            },
+          },
+        ],
       },
     },
 

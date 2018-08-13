@@ -1,0 +1,3 @@
+[submodule "screeps_modules/sos"]
+	path = screeps_modules/sos
+	url = git@github.com:screepers/ScreepsOS.git
