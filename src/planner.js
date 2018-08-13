@@ -28,7 +28,9 @@ module.exports.planRoles = function() {
 
   _.each(config, (plan, role) => {
     let creeps = byRole.get(role);
-    console.log('planning ' + role + ' found ' + creeps.length + ' planning ' + config[role]);
+    if (creeps.length != config[role]) {
+      console.log('planning ' + role + ' found ' + creeps.length + ' planning ' + config[role]);
+    }
     if(creeps.length < config[role]) {
       let newName = role + Game.time;
       console.log('Spawning new ' + role + ': ' + newName);
